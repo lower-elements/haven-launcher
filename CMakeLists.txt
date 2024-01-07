@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.24)
 
 project("Haven Launcher"
     VERSION 0.1.0
@@ -34,7 +34,14 @@ include(FetchContent)
     FetchContent_MakeAvailable(wxWidgets)
     
 
-add_executable(haven src/app.cpp src/main_frame.cpp)
+    set(SOURCE_FILES src/app.cpp src/main_frame.cpp)
+
+    if (MSVC)
+        add_executable(haven WIN32 ${SOURCE_FILES} src/haven.rc)
+else()
+        add_executable(haven ${SOURCE_FILES})
+endif()
+
 target_include_directories(haven PRIVATE include)
     target_link_libraries(haven
         wxbase
