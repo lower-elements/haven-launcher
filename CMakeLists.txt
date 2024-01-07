@@ -18,6 +18,10 @@ elseif(MSVC)
 endif()
 
 # Dependencies
+find_package(wxWidgets COMPONENTS core base net)
+if (wxWidgets_FOUND)
+    include(${wxWidgets_USE_FILE})
+else()
 include(FetchContent)
 
     set(wxBUILD_SHARED OFF CACHE BOOL "Build wx libraries as shared libs")
@@ -32,6 +36,7 @@ include(FetchContent)
     )
     
     FetchContent_MakeAvailable(wxWidgets)
+endif()
     
 
     set(SOURCE_FILES src/app.cpp src/main_frame.cpp)
@@ -42,10 +47,11 @@ else()
         add_executable(haven ${SOURCE_FILES})
 endif()
 
-target_include_directories(haven PRIVATE include)
-    target_link_libraries(haven
-        wxbase
-        wxcore
-        wxnet
+target_compile_definitions(haven PRIVATE ${wxWidgets_DEFINITIONS})
+target_include_directories(haven PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${wxWidgets_INCLUDE_DIRS}
     )
+target_link_directories(haven PRIVATE ${wxWidgets_LIBRARY_DIRS})
+target_link_libraries(haven ${wxWidgets_LIBRARIES})
 install(TARGETS haven DESTINATION bin)
