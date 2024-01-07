@@ -1,40 +1,17 @@
-#include <cstdlib>
 #include <wx/wx.h>
 
-class HavenApp : public wxApp {
-public:
-  virtual bool OnInit();
-};
+#include "main_frame.hpp"
 
-class HavenFrame : public wxFrame {
-public:
-  HavenFrame(const wxString &title, const wxPoint &pos, const wxSize &size);
-
-private:
-  void OnHello(wxCommandEvent &event);
-  void OnExit(wxCommandEvent &event);
-  void OnAbout(wxCommandEvent &event);
-
-  wxDECLARE_EVENT_TABLE();
-};
-
-enum { ID_Hello = 1 };
-
-wxBEGIN_EVENT_TABLE(HavenFrame, wxFrame) EVT_MENU(ID_Hello, HavenFrame::OnHello)
+// clang-format off
+wxBEGIN_EVENT_TABLE(HavenFrame, wxFrame)
+    EVT_MENU(ID_Hello, HavenFrame::OnHello)
     EVT_MENU(wxID_EXIT, HavenFrame::OnExit)
-        EVT_MENU(wxID_ABOUT, HavenFrame::OnAbout) wxEND_EVENT_TABLE()
+        EVT_MENU(wxID_ABOUT, HavenFrame::OnAbout)
+wxEND_EVENT_TABLE()
+    // clang-format on
 
-            wxIMPLEMENT_APP(HavenApp);
-
-bool HavenApp::OnInit() {
-  HavenFrame *frame =
-      new HavenFrame("Haven Launcher", wxPoint(50, 50), wxSize(800, 600));
-  frame->Show(true);
-  return true;
-}
-
-HavenFrame::HavenFrame(const wxString &title, const wxPoint &pos,
-                       const wxSize &size)
+    HavenFrame::HavenFrame(const wxString &title, const wxPoint &pos,
+                           const wxSize &size)
     : wxFrame(NULL, wxID_ANY, title, pos, size) {
   wxMenu *menuFile = new wxMenu;
   menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",

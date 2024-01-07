@@ -34,7 +34,8 @@ include(FetchContent)
     FetchContent_MakeAvailable(wxWidgets)
     
 
-add_executable(haven src/main.cpp)
+add_executable(haven src/app.cpp src/main_frame.cpp)
+target_include_directories(haven PRIVATE include)
     target_link_libraries(haven
         wxbase
         wxcore
