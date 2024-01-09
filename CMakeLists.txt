@@ -24,6 +24,7 @@ if (wxWidgets_FOUND)
 else()
 include(FetchContent)
 
+message(STATUS "Building wxWidgets from source instead")
     set(wxBUILD_SHARED OFF CACHE BOOL "Build wx libraries as shared libs")
     set(wxBUILD_PRECOMP ON CACHE BOOL "Use precompiled headers")
     set(wxBUILD_MONOLITHIC OFF CACHE BOOL "Build a single library")
