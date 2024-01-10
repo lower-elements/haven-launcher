@@ -26,7 +26,7 @@ wxEND_EVENT_TABLE()
   menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
                    "Help string shown in status bar for this menu item");
   menuFile->AppendSeparator();
-  menuFile->Append(wxID_EXIT);
+  menuFile->Append(wxID_EXIT, "&Quit...\tCtrl-Shift-Q");
 
   wxMenu *menuHelp = new wxMenu;
   menuHelp->Append(wxID_ABOUT);
