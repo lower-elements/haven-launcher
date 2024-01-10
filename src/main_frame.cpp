@@ -9,11 +9,12 @@
 #include <wx/wx.h>
 #endif
 
+#include <preferences.hpp>
 #include "main_frame.hpp"
 
 // clang-format off
 wxBEGIN_EVENT_TABLE(HavenFrame, wxFrame)
-    EVT_MENU(ID_Hello, HavenFrame::OnHello)
+    EVT_MENU(wxID_PREFERENCES, HavenFrame::OnPreferences)
     EVT_MENU(wxID_EXIT, HavenFrame::OnExit)
         EVT_MENU(wxID_ABOUT, HavenFrame::OnAbout)
 wxEND_EVENT_TABLE()
@@ -23,7 +24,7 @@ wxEND_EVENT_TABLE()
                            const wxSize &size)
     : wxFrame(NULL, wxID_ANY, title, pos, size) {
   wxMenu *menuFile = new wxMenu;
-  menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
+  menuFile->Append(wxID_PREFERENCES, "&preferences...\tCtrl-,",
                    "Help string shown in status bar for this menu item");
   menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT, "&Quit...\tCtrl-Shift-Q");
@@ -48,6 +49,6 @@ void HavenFrame::OnAbout(wxCommandEvent &event) {
                wxOK | wxICON_INFORMATION);
 }
 
-void HavenFrame::OnHello(wxCommandEvent &event) {
-  wxLogMessage("Hello world from wxWidgets!");
+void HavenFrame::OnPreferences(wxCommandEvent &event) {
+  HavenPreferences HavenPrefs("preferences");
 }

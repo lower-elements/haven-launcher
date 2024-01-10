@@ -40,7 +40,7 @@ message(STATUS "Building wxWidgets from source instead")
 endif()
     
 
-    set(SOURCE_FILES src/app.cpp src/main_frame.cpp)
+    set(SOURCE_FILES src/app.cpp src/main_frame.cpp src/preferences.cpp)
 
     if (MSVC)
         add_executable(haven WIN32 ${SOURCE_FILES} src/haven.rc)
