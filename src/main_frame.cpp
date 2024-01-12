@@ -9,8 +9,8 @@
 #include <wx/wx.h>
 #endif
 
-#include <preferences.hpp>
 #include "main_frame.hpp"
+#include <preferences.hpp>
 
 // clang-format off
 wxBEGIN_EVENT_TABLE(HavenFrame, wxFrame)
@@ -50,5 +50,6 @@ void HavenFrame::OnAbout(wxCommandEvent &event) {
 }
 
 void HavenFrame::OnPreferences(wxCommandEvent &event) {
-  HavenPreferences HavenPrefs("preferences");
+  HavenPreferences haven_prefs("preferences");
+  haven_prefs.Show(this);
 }

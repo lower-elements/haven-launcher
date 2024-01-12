@@ -1,15 +1,15 @@
-#include <wx/wx.h>
 #include <wx/preferences.h>
+#include <wx/wx.h>
 #include <preferences.hpp>
 
-HavenPreferences::HavenPreferences(const wxString &title) : wxPreferencesEditor(title) {
-    AddPage(new HavenPreferencesGeneral());
-    AddPage(new HavenPreferencesRepository());
-    AddPage(new HavenPreferencesDownload());
-    Show(nullptr);
+HavenPreferences::HavenPreferences(const wxString &title)
+    : wxPreferencesEditor(title) {
+  AddPage(new HavenPreferencesGeneral());
+  AddPage(new HavenPreferencesRepository());
+  AddPage(new HavenPreferencesDownload());
 };
 
-HavenPreferences::~HavenPreferences() {};
+HavenPreferences::~HavenPreferences(){};
 
 
 
@@ -46,24 +46,23 @@ wxWindow* HavenPreferencesGeneral::CreateWindow(wxWindow *parent) {
     Panel->Layout();
 
     return Panel;
-
-
 }
 
-HavenPreferencesRepository::HavenPreferencesRepository() : wxPreferencesPage() {};
-HavenPreferencesRepository::~HavenPreferencesRepository() {};
+HavenPreferencesRepository::HavenPreferencesRepository()
+    : wxPreferencesPage(){};
+HavenPreferencesRepository::~HavenPreferencesRepository(){};
 wxString HavenPreferencesRepository::GetName() const {
-    return "repository settings";
+  return "repository settings";
 };
-wxWindow* HavenPreferencesRepository::CreateWindow(wxWindow *parent) {
-    return new wxPanel(parent);
+wxWindow *HavenPreferencesRepository::CreateWindow(wxWindow *parent) {
+  return new wxPanel(parent);
 };
 
-HavenPreferencesDownload::HavenPreferencesDownload() : wxPreferencesPage() {};
-HavenPreferencesDownload::~HavenPreferencesDownload() {};
+HavenPreferencesDownload::HavenPreferencesDownload() : wxPreferencesPage(){};
+HavenPreferencesDownload::~HavenPreferencesDownload(){};
 wxString HavenPreferencesDownload::GetName() const {
-    return "download settings";
+  return "download settings";
 };
-wxWindow* HavenPreferencesDownload::CreateWindow(wxWindow *parent) {
-    return new wxPanel(parent);
+wxWindow *HavenPreferencesDownload::CreateWindow(wxWindow *parent) {
+  return new wxPanel(parent);
 };
