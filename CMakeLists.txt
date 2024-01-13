@@ -13,24 +13,16 @@ if (WIN32)
 set(CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_STATIC_LIBRARY_SUFFIX})
 endif()
 
-# Warnings
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
-elseif(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
-endif()
-
 # Dependencies
-find_package(wxWidgets COMPONENTS core base net)
-if (wxWidgets_FOUND)
-    include(${wxWidgets_USE_FILE})
-else()
+find_package(wxWidgets COMPONENTS core base)
+if (NOT wxWidgets_FOUND)
 include(FetchContent)
 
 message(STATUS "Building wxWidgets from source instead")
+set(wxWidgets_USE_STATIC 1)
     set(wxBUILD_SHARED OFF CACHE BOOL "Build wx libraries as shared libs")
     set(wxBUILD_PRECOMP ON CACHE BOOL "Use precompiled headers")
-    set(wxBUILD_MONOLITHIC OFF CACHE BOOL "Build a single library")
+    #set(wxBUILD_MONOLITHIC OFF CACHE BOOL "Build a single library")
     FetchContent_Declare(
         wxWidgets 
         URL https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxWidgets-3.2.4.zip
@@ -41,21 +33,28 @@ message(STATUS "Building wxWidgets from source instead")
     
     FetchContent_MakeAvailable(wxWidgets)
 endif()
-    
+    include(${wxWidgets_USE_FILE})
 
     set(SOURCE_FILES src/app.cpp src/main_frame.cpp src/preferences.cpp)
 
-    if (MSVC)
-        add_executable(haven WIN32 ${SOURCE_FILES} src/haven.rc)
+    add_executable(haven WIN32 ${SOURCE_FILES} src/haven.rc)
+
+    target_include_directories(haven PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+    if(wxWidgets_FOUND)
+    target_compile_definitions(haven PRIVATE ${wxWidgets_DEFINITIONS})
+    target_include_directories(haven PRIVATE ${wxWidgets_INCLUDE_DIRS})
+    target_link_directories(haven PRIVATE ${wxWidgets_LIBRARY_DIRS})
+    target_link_libraries(haven ${wxWidgets_LIBRARIES})
 else()
-        add_executable(haven ${SOURCE_FILES})
+    target_link_libraries(haven PRIVATE wx::base wx::core)
+    endif()
+
+# Warnings
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    target_compile_options(haven PRIVATE -Wall -Wextra -pedantic)
+elseif(MSVC)
+    target_compile_options(haven PRIVATE /W4)
 endif()
 
-target_compile_definitions(haven PRIVATE ${wxWidgets_DEFINITIONS})
-target_include_directories(haven PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${wxWidgets_INCLUDE_DIRS}
-    )
-target_link_directories(haven PRIVATE ${wxWidgets_LIBRARY_DIRS})
-target_link_libraries(haven ${wxWidgets_LIBRARIES})
 install(TARGETS haven DESTINATION bin)
