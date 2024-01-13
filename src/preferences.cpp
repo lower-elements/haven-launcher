@@ -23,23 +23,27 @@ wxWindow* HavenPreferencesGeneral::CreateWindow(wxWindow *parent) {
     wxFlexGridSizer* Sizer = new wxFlexGridSizer(2, 5, 5);
 
     //The language picker
+    Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Language"));
     wxChoice* LanguageChoice = new wxChoice(Panel, wxID_ANY);
     LanguageChoice->SetExtraStyle(wxCB_SORT);
     LanguageChoice->SetName("Language");
     LanguageChoice->Append("English");
     LanguageChoice->SetSelection(0);
 
-    Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Language"));
     Sizer->Add(LanguageChoice);
 
+    Sizer->Add(new wxStaticText(Panel, wxID_ANY, ""));
     wxCheckBox* LauncherUpdates = new wxCheckBox(Panel, wxID_ANY, "Check for updates to the launcher on opening the app");
     LauncherUpdates->SetValue(1);
-    Sizer->Add(new wxStaticText(Panel, wxID_ANY, ""));
     Sizer->Add(LauncherUpdates);
+    Sizer->Add(new wxStaticText(Panel, wxID_ANY, ""));
     wxCheckBox* GameUpdates = new wxCheckBox(Panel, wxID_ANY, "Check for updates to Installed Games on the opening of the app");
     GameUpdates->SetValue(1);
-    Sizer->Add(new wxStaticText(Panel, wxID_ANY, ""));
     Sizer->Add(GameUpdates);
+
+    Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Installation Directory"));
+    wxTextCtrl* InstallDir = new wxTextCtrl(Panel, wxID_ANY, "./library/games/");
+    Sizer->Add(InstallDir);
 
 
     Panel->SetSizer(Sizer);
@@ -55,7 +59,22 @@ wxString HavenPreferencesRepository::GetName() const {
   return "repository settings";
 };
 wxWindow *HavenPreferencesRepository::CreateWindow(wxWindow *parent) {
-  return new wxPanel(parent);
+  wxPanel* Panel = new wxPanel(parent);
+  wxFlexGridSizer* Sizer = new wxFlexGridSizer(4, 5, 5);
+  Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Repositories"));
+  wxChoice* RepoList = new wxChoice(Panel, wxID_ANY);
+
+  Sizer->Add(RepoList);
+  Sizer->Add(new wxButton(Panel, wxID_ANY, "Add"));
+  Sizer->Add(new wxButton(Panel, wxID_ANY, "Edit"));
+  Sizer->Add(new wxButton(Panel, wxID_ANY, "remove"));
+
+  wxCheckBox* TrustedRepos = new wxCheckBox(Panel, wxID_ANY, "Always load trusted repos");
+  TrustedRepos->SetValue(1);
+  Sizer->Add(TrustedRepos, wxEXPAND);
+  Panel->SetSizer(Sizer);
+  Panel->Layout();
+  return Panel;
 };
 
 HavenPreferencesDownload::HavenPreferencesDownload() : wxPreferencesPage(){};
@@ -64,5 +83,13 @@ wxString HavenPreferencesDownload::GetName() const {
   return "download settings";
 };
 wxWindow *HavenPreferencesDownload::CreateWindow(wxWindow *parent) {
-  return new wxPanel(parent);
+  wxPanel* Panel = new wxPanel(parent);
+  wxFlexGridSizer* Sizer = new wxFlexGridSizer(2, 5, 5);
+  Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Download Directory"));
+  wxTextCtrl* DownloadDir = new wxTextCtrl(Panel, wxID_ANY, "./library/downloads/");
+  Sizer->Add(DownloadDir);
+
+  Panel->SetSizer(Sizer);
+  Panel->Layout();
+  return Panel;
 };
