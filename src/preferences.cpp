@@ -1,5 +1,6 @@
 #include <wx/preferences.h>
 #include <wx/wx.h>
+#include <wx/spinctrl.h>
 #include <preferences.hpp>
 
 HavenPreferences::HavenPreferences(const wxString &title)
@@ -88,6 +89,18 @@ wxWindow *HavenPreferencesDownload::CreateWindow(wxWindow *parent) {
   Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Download Directory"));
   wxTextCtrl* DownloadDir = new wxTextCtrl(Panel, wxID_ANY, "./library/downloads/");
   Sizer->Add(DownloadDir);
+
+  Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Download throttle (mb/s)"));
+  wxSpinCtrl* DownloadthrottleMB = new wxSpinCtrl(Panel, wxID_ANY, "000");
+  DownloadthrottleMB->SetRange(0,100);
+  Sizer->Add(DownloadthrottleMB);
+  Sizer->Add(new wxStaticText(Panel, wxID_ANY, "Download throttle (kb/s)"));
+  wxSpinCtrl* DownloadthrottleKB = new wxSpinCtrl(Panel, wxID_ANY, "0000");
+  DownloadthrottleKB->SetRange(0,1023);
+  DownloadthrottleKB->SetBase(2);
+  Sizer->Add(DownloadthrottleKB);
+
+
 
   Panel->SetSizer(Sizer);
   Panel->Layout();
