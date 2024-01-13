@@ -42,14 +42,14 @@ wxEND_EVENT_TABLE()
   SetStatusText("Welcome to Haven Launcher");
 }
 
-void HavenFrame::OnExit(wxCommandEvent &event) { Close(true); }
+void HavenFrame::OnExit(wxCommandEvent &) { Close(true); }
 
-void HavenFrame::OnAbout(wxCommandEvent &event) {
+void HavenFrame::OnAbout(wxCommandEvent &) {
   wxMessageBox("This is a wxWidgets' Hello World example", "About Hello World",
                wxOK | wxICON_INFORMATION);
 }
 
-void HavenFrame::OnPreferences(wxCommandEvent &event) {
+void HavenFrame::OnPreferences(wxCommandEvent &) {
   HavenPreferences haven_prefs("preferences");
   haven_prefs.Show(this);
 }
