@@ -9,6 +9,7 @@
 #include <wx/wx.h>
 #endif
 
+#include <wx/config.h>
 #include "main_frame.hpp"
 #include <preferences.hpp>
 
@@ -22,7 +23,7 @@ wxEND_EVENT_TABLE()
 
     HavenFrame::HavenFrame(const wxString &title, const wxPoint &pos,
                            const wxSize &size)
-    : wxFrame(NULL, wxID_ANY, title, pos, size) {
+    : wxFrame(NULL, wxID_ANY, title, pos, size), M_Config("haven-launcher") {
   wxMenu *menuFile = new wxMenu;
   menuFile->Append(wxID_PREFERENCES, "&preferences...\tCtrl-,",
                    "Help string shown in status bar for this menu item");
@@ -50,6 +51,6 @@ void HavenFrame::OnAbout(wxCommandEvent &) {
 }
 
 void HavenFrame::OnPreferences(wxCommandEvent &) {
-  HavenPreferences haven_prefs("preferences");
+  HavenPreferences haven_prefs("preferences", M_Config);
   haven_prefs.Show(this);
 }

@@ -12,6 +12,7 @@
 #include <wx/preferences.h>
 #include <wx/config.h>
 #include <wx/spinctrl.h>
+#include <wx/stdpaths.h>
 
 #include <preferences.hpp>
 
@@ -81,8 +82,11 @@ GeneralPanel::GeneralPanel(wxWindow* Parent, wxConfig& Config) : wxPanel(Parent)
   Sizer->Add(GameUpdates);
 
   Sizer->Add(new wxStaticText(this, wxID_ANY, "Installation Directory"));
-  wxTextCtrl *InstallDir = new wxTextCtrl(this, ID_GAMES_DIR_EDIT, M_Config.Read("preferences/general/games_dir", "./library/games/"));
-  Sizer->Add(InstallDir);
+  M_InstallDir = new wxTextCtrl(this, ID_GAMES_DIR_EDIT, M_Config.Read("preferences/general/games_dir", "./library/games/"));
+  Sizer->Add(M_InstallDir);
+  Sizer->Add(new wxStaticText(this, wxID_ANY, "click to find directory"));
+  Sizer->Add(new wxButton(this, ID_GAMES_DIR_BROWSE, "Browse"));
+
 
   SetSizer(Sizer);
   Layout();
@@ -108,6 +112,20 @@ void GeneralPanel::OnGameDir(wxCommandEvent &event)
 {
   M_Config.Write("preferences/general/games_dir", event.GetString());
 }
+
+
+void GeneralPanel::OnGameDirBrowse(wxCommandEvent &event)
+{
+  wxStandardPaths paths = wxStandardPaths::Get();
+  wxString AppDir = paths.GetDataDir();
+  wxDirDialog* Browse = new wxDirDialog(this, "Select a directory in which games will be installed... ", M_Config.Read("preferences/general/games_dir", AppDir));
+  if (Browse->ShowModal()==wxID_CANCEL) {
+    return;
+  }
+  M_Config.Write("preferences/general/games_dir", Browse->GetPath());
+  M_InstallDir->SetValue(M_Config.Read("preferences/general/games_dir"));
+}
+
 
 RepositoryPanel::RepositoryPanel(wxWindow* parent, wxConfig& Config) 
   : wxPanel(parent), M_Config(Config) 
@@ -160,6 +178,7 @@ wxBEGIN_EVENT_TABLE(GeneralPanel, wxPanel)
   EVT_CHECKBOX(ID_LAUNCHER_UPDATES, GeneralPanel::OnLauncherUpdates)
   EVT_CHECKBOX(ID_GAME_UPDATES, GeneralPanel::OnGameUpdates)
   EVT_TEXT(ID_GAMES_DIR_EDIT, GeneralPanel::OnGameDir)
+  EVT_BUTTON(ID_GAMES_DIR_BROWSE, GeneralPanel::OnGameDirBrowse)
 wxEND_EVENT_TABLE()
 
 wxBEGIN_EVENT_TABLE(DownloadPanel, wxPanel)

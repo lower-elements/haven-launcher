@@ -72,8 +72,10 @@ public:
   void OnGameUpdates(wxCommandEvent &event);
   void OnLauncherUpdates(wxCommandEvent &event);
   void OnGameDir(wxCommandEvent &event);
+  void OnGameDirBrowse(wxCommandEvent &event);
 private:
   wxConfig& M_Config;
+  wxTextCtrl* M_InstallDir;
 
   wxDECLARE_EVENT_TABLE();
 };
